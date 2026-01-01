@@ -15,16 +15,32 @@ from django.utils.html import format_html
 from .models import User, UserProfile
 
 
+from django.contrib import admin
+from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
+from django.utils.html import format_html
+from django.utils.translation import gettext_lazy as _
+from .models import User, UserProfile
+
+
+from django.contrib import admin
+from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
+from django.utils.html import format_html
+from django.utils.translation import gettext_lazy as _
+from .models import User, UserProfile
+
+from django.contrib import admin
+from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
+from django.utils.html import format_html
+from django.utils.translation import gettext_lazy as _
+from .models import User, UserProfile
+
+
 @admin.register(User)
 class UserAdmin(BaseUserAdmin):
     """
     Admin configuration for User model
-    
-    Provides a comprehensive interface for managing users
-    in the Django admin panel.
     """
     
-    # List display configuration
     list_display = [
         'email',
         'get_full_name_display',
@@ -51,7 +67,6 @@ class UserAdmin(BaseUserAdmin):
     
     ordering = ['-date_joined']
     
-    # Detail view configuration
     fieldsets = (
         (None, {
             'fields': ('email', 'password')
@@ -75,7 +90,6 @@ class UserAdmin(BaseUserAdmin):
         }),
     )
     
-    # Add user configuration
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
@@ -93,50 +107,64 @@ class UserAdmin(BaseUserAdmin):
     
     readonly_fields = ['date_joined', 'last_login']
     
-    # Custom display methods
     def get_full_name_display(self, obj):
         """Display full name in list view"""
-        return obj.get_full_name()
+        if not obj:
+            return '-'
+        try:
+            full_name = obj.get_full_name()
+            return full_name if full_name else '-'
+        except Exception:
+            return '-'
     get_full_name_display.short_description = 'Full Name'
     
     def role_badge(self, obj):
         """Display role as colored badge"""
-        colors = {
-            'admin': '#dc3545',  # Red
-            'customer': '#28a745'  # Green
-        }
-        color = colors.get(obj.role, '#6c757d')
-        return format_html(
-            '<span style="background-color: {}; color: white; '
-            'padding: 3px 10px; border-radius: 3px; font-weight: bold;">{}</span>',
-            color,
-            obj.get_role_display()
-        )
+        if not obj or not hasattr(obj, 'role'):
+            return format_html('<span style="color: gray;">{}</span>', 'No role')
+        try:
+            colors = {
+                'admin': '#dc3545',
+                'customer': '#28a745'
+            }
+            color = colors.get(obj.role, '#6c757d')
+            try:
+                role_display = obj.get_role_display()
+            except (AttributeError, Exception):
+                role_display = str(obj.role) if obj.role else 'Unknown'
+            
+            return format_html(
+                '<span style="background-color: {}; color: white; '
+                'padding: 3px 10px; border-radius: 3px; font-weight: bold;">{}</span>',
+                color,
+                role_display
+            )
+        except Exception:
+            return format_html('<span style="color: gray;">{}</span>', 'Error')
     role_badge.short_description = 'Role'
     
     def is_active_badge(self, obj):
         """Display active status as badge"""
+        if not obj or not hasattr(obj, 'is_active'):
+            return format_html('<span style="color: gray;">{}</span>', '-')
+        
         if obj.is_active:
-            return format_html(
-                '<span style="color: green; font-weight: bold;">✓ Active</span>'
-            )
-        return format_html(
-            '<span style="color: red; font-weight: bold;">✗ Inactive</span>'
-        )
+            return format_html('<span style="color: green; font-weight: bold;">{}</span>', '✓ Active')
+        else:
+            return format_html('<span style="color: red; font-weight: bold;">{}</span>', '✗ Inactive')
     is_active_badge.short_description = 'Status'
     
     def is_verified_badge(self, obj):
         """Display verified status as badge"""
+        if not obj or not hasattr(obj, 'is_verified'):
+            return format_html('<span style="color: gray;">{}</span>', '-')
+        
         if obj.is_verified:
-            return format_html(
-                '<span style="color: green;">✓ Verified</span>'
-            )
-        return format_html(
-            '<span style="color: orange;">✗ Not Verified</span>'
-        )
+            return format_html('<span style="color: green;">{}</span>', '✓ Verified')
+        else:
+            return format_html('<span style="color: orange;">{}</span>', '✗ Not Verified')
     is_verified_badge.short_description = 'Email Verified'
     
-    # Actions
     actions = ['activate_users', 'deactivate_users', 'verify_users']
     
     def activate_users(self, request, queryset):
@@ -162,9 +190,6 @@ class UserAdmin(BaseUserAdmin):
 class UserProfileAdmin(admin.ModelAdmin):
     """
     Admin configuration for UserProfile model
-    
-    Provides interface for managing user profiles
-    including address and personal information.
     """
     
     list_display = [
@@ -213,22 +238,26 @@ class UserProfileAdmin(admin.ModelAdmin):
         }),
     )
     
-    # Custom display methods
     def user_email(self, obj):
         """Display user email"""
-        return obj.user.email
+        if not obj or not hasattr(obj, 'user') or not obj.user or not hasattr(obj.user, 'email'):
+            return '-'
+        return obj.user.email or '-'
     user_email.short_description = 'User Email'
     user_email.admin_order_field = 'user__email'
     
     def has_avatar(self, obj):
         """Check if user has avatar"""
-        if obj.avatar:
-            return format_html(
-                '<span style="color: green;">✓ Yes</span>'
-            )
-        return format_html(
-            '<span style="color: gray;">✗ No</span>'
-        )
+        if not obj or not hasattr(obj, 'avatar') or not obj.avatar:
+            return format_html('<span style="color: gray;">{}</span>', '✗ No')
+        
+        try:
+            if hasattr(obj.avatar, 'name') and obj.avatar.name:
+                return format_html('<span style="color: green;">{}</span>', '✓ Yes')
+        except Exception:
+            return format_html('<span style="color: gray;">{}</span>', '✗ No')
+        
+        return format_html('<span style="color: gray;">{}</span>', '✗ No')
     has_avatar.short_description = 'Has Avatar'
 
 
@@ -236,3 +265,7 @@ class UserProfileAdmin(admin.ModelAdmin):
 admin.site.site_header = "E-Commerce Admin Panel"
 admin.site.site_title = "E-Commerce Admin"
 admin.site.index_title = "Welcome to E-Commerce Administration"
+
+
+
+

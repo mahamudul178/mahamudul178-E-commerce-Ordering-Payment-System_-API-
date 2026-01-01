@@ -10,6 +10,11 @@ from django.utils.html import format_html
 from .models import Product, Category, ProductImage
 
 
+from django.contrib import admin
+from django.utils.html import format_html
+from .models import Category, Product, ProductImage
+
+
 class ProductImageInline(admin.TabularInline):
     """Inline admin for product images"""
     model = ProductImage
@@ -123,9 +128,11 @@ class ProductAdmin(admin.ModelAdmin):
     
     def price_display(self, obj):
         """Display formatted price"""
+        # ✅ FIX: প্রথমে format করুন
+        formatted_price = f'{obj.price:,.2f}'
         return format_html(
-            '<strong>৳{:,.2f}</strong>',
-            obj.price
+            '<strong>৳{}</strong>',
+            formatted_price
         )
     price_display.short_description = 'Price'
     
@@ -212,3 +219,7 @@ class ProductImageAdmin(admin.ModelAdmin):
             )
         return "No Image"
     image_thumbnail.short_description = 'Thumbnail'
+    
+    
+    
+    

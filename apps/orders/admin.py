@@ -12,6 +12,12 @@ from django.utils.safestring import mark_safe
 from .models import Order, OrderItem, OrderStatusHistory
 
 
+from django.contrib import admin
+from django.utils.html import format_html
+from django.urls import reverse
+from .models import Order, OrderItem, OrderStatusHistory
+
+
 class OrderItemInline(admin.TabularInline):
     """Inline admin for order items"""
     model = OrderItem
@@ -166,9 +172,11 @@ class OrderAdmin(admin.ModelAdmin):
     
     def total_amount_display(self, obj):
         """Display formatted total amount"""
+        # ✅ FIX: প্রথমে format করুন, তারপর format_html এ pass করুন
+        formatted_amount = f'{obj.total_amount:,.2f}'
         return format_html(
-            '<strong style="color: #28a745; font-size: 14px;">৳{:,.2f}</strong>',
-            obj.total_amount
+            '<strong style="color: #28a745; font-size: 14px;">৳{}</strong>',
+            formatted_amount
         )
     total_amount_display.short_description = 'Total'
     
@@ -220,7 +228,6 @@ class OrderAdmin(admin.ModelAdmin):
 @admin.register(OrderItem)
 class OrderItemAdmin(admin.ModelAdmin):
     """Admin configuration for OrderItem model"""
-    
     list_display = [
         'order_number_display',
         'product_link',
@@ -229,15 +236,12 @@ class OrderItemAdmin(admin.ModelAdmin):
         'subtotal_display',
         'created_at'
     ]
-    
     list_filter = ['created_at']
-    
     search_fields = [
         'order__order_number',
         'product__name',
         'product__sku'
     ]
-    
     readonly_fields = [
         'order',
         'product',
@@ -247,7 +251,6 @@ class OrderItemAdmin(admin.ModelAdmin):
         'created_at',
         'updated_at'
     ]
-    
     ordering = ['-created_at']
     
     def order_number_display(self, obj):
@@ -272,14 +275,18 @@ class OrderItemAdmin(admin.ModelAdmin):
     
     def price_display(self, obj):
         """Display formatted price"""
-        return format_html('৳{:,.2f}', obj.price)
+        # ✅ Fix: প্রথমে format করুন, তারপর format_html এ pass করুন
+        formatted_price = f'{obj.price:,.2f}'
+        return format_html('৳{}', formatted_price)
     price_display.short_description = 'Price'
     
     def subtotal_display(self, obj):
         """Display formatted subtotal"""
+        # ✅ Fix: প্রথমে format করুন, তারপর format_html এ pass করুন
+        formatted_subtotal = f'{obj.subtotal:,.2f}'
         return format_html(
-            '<strong style="color: #28a745;">৳{:,.2f}</strong>',
-            obj.subtotal
+            '<strong style="color: #28a745;">৳{}</strong>',
+            formatted_subtotal
         )
     subtotal_display.short_description = 'Subtotal'
     
