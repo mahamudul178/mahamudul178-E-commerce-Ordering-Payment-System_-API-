@@ -8,10 +8,9 @@ from decouple import config as env_config
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-sjhpr60(wyci0w%kdw#e=7ebk$0$yth_6$1*-i9^%i=9izwcb)'
+SECRET_KEY = env_config('SECRET_KEY')
+DEBUG = env_config('DEBUG', default=False, cast=bool)
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
 
 ALLOWED_HOSTS = env_config(
     'ALLOWED_HOSTS',
@@ -41,9 +40,9 @@ INSTALLED_APPS = [
     
     # Local apps
     'apps.users',
-    'apps.products',  # Will add next
-    'apps.orders',    # Will add next
-    'apps.payments',  # Will add next
+    'apps.products', 
+    'apps.orders',    
+    'apps.payments', 
 ]
 
 MIDDLEWARE = [
@@ -75,6 +74,7 @@ TEMPLATES = [
     },
 ]
 
+
 WSGI_APPLICATION = 'config.wsgi.application'
 
 
@@ -93,10 +93,7 @@ DATABASES = {
 }
 
 
-# ==================================================
-# Custom User Model
-# ==================================================
-
+#-------- Custom User Model----------
 AUTH_USER_MODEL = 'users.User'
 
 
@@ -185,15 +182,15 @@ REST_FRAMEWORK = {
     ],
 }
 
+
 # Add browsable API renderer in debug mode
 if DEBUG:
     REST_FRAMEWORK['DEFAULT_RENDERER_CLASSES'].append(
         'rest_framework.renderers.BrowsableAPIRenderer'
     )
 
-# ==================================================
-# JWT Settings
-# ==================================================
+
+# --------JWT Settings----------
 
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(
@@ -223,9 +220,8 @@ SIMPLE_JWT = {
     'JTI_CLAIM': 'jti',
 }
 
-# ==================================================
-# CORS Settings
-# ==================================================
+
+# ------------CORS Settings----------
 
 CORS_ALLOWED_ORIGINS = [
     env_config('FRONTEND_URL', default='http://localhost:3000'),
@@ -257,10 +253,7 @@ CORS_ALLOW_HEADERS = [
 ]
 
 
-
-# ==================================================
 # Redis Cache Configuration
-# ==================================================
 
 CACHES = {
     'default': {
@@ -288,9 +281,8 @@ CACHES = {
 # Cache time in seconds
 CACHE_TTL = 60 * 15  # 15 minutes
 
-# ==================================================
-# Payment Provider Settings
-# ==================================================
+
+# ---------Payment Provider Settings--------------
 
 # Stripe Configuration
 STRIPE_PUBLIC_KEY = env_config('STRIPE_PUBLIC_KEY', default='')
@@ -308,9 +300,8 @@ BKASH_BASE_URL = env_config(
 )
 
 
-# ==================================================
+
 # Logging Configuration
-# ==================================================
 
 LOGGING = {
     'version': 1,
@@ -379,9 +370,8 @@ LOGGING = {
 import os
 os.makedirs(BASE_DIR / 'logs', exist_ok=True)
 
-# ==================================================
-# Swagger/OpenAPI Settings
-# ==================================================
+
+# ---------Swagger/OpenAPI Settings-------------
 
 SWAGGER_SETTINGS = {
     'SECURITY_DEFINITIONS': {
@@ -402,13 +392,11 @@ SWAGGER_SETTINGS = {
     ],
 }
 
-# ==================================================
-# Email Configuration (for future use)
-# ==================================================
+
+# ---------Email Configuration (for future use)-------------
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # Development
 # EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'  # Production
-
 EMAIL_HOST = env_config('EMAIL_HOST', default='smtp.gmail.com')
 EMAIL_PORT = env_config('EMAIL_PORT', default=587, cast=int)
 EMAIL_USE_TLS = True
@@ -416,10 +404,9 @@ EMAIL_HOST_USER = env_config('EMAIL_HOST_USER', default='')
 EMAIL_HOST_PASSWORD = env_config('EMAIL_HOST_PASSWORD', default='')
 DEFAULT_FROM_EMAIL = env_config('DEFAULT_FROM_EMAIL', default='noreply@ecommerce.com')
 
-# ==================================================
-# Security Settings (Production)
-# ==================================================
 
+
+# ---------Security Settings (Production)-------------
 if not DEBUG:
     SECURE_SSL_REDIRECT = True
     SESSION_COOKIE_SECURE = True
@@ -430,3 +417,7 @@ if not DEBUG:
     SECURE_HSTS_SECONDS = 31536000
     SECURE_HSTS_INCLUDE_SUBDOMAINS = True
     SECURE_HSTS_PRELOAD = True
+
+
+
+

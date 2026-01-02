@@ -87,20 +87,19 @@ urlpatterns = [
         name='schema-yaml'
     ),
     
-    # ============================================
-    # API Endpoints
-    # ============================================
+ 
+    # ----------API Endpoints-----------------
     
     # User Management API
     path('api/users/', include('apps.users.urls')),
     
-    # Product Management API (Coming in Step 2)
+    # Product Management API 
     path('api/products/', include('apps.products.urls')),
     
-    # Order Management API (Coming in Step 3)
+    # Order Management API 
     path('api/orders/', include('apps.orders.urls')),
     
-    # Payment API (Coming in Step 4)
+    # Payment API 
     path('api/payments/', include('apps.payments.urls')),
 ]
 
