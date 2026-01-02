@@ -12,7 +12,8 @@ click-didyoumean==0.3.1
 click-plugins==1.1.1.2
 click-repl==0.3.0
 decorator==5.2.1
-Django==6.0
+# Django==6.0
+Django>=5.0,<6.0
 django-admin==2.0.2
 django-cors-headers==4.3.1
 django-excel-response2==3.0.6

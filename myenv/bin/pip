@@ -1,6 +1,4 @@
-#!/bin/sh
-'''exec' "/media/mahamudul/New Volume/All_Project/DRF/Assignment/ecommerce_backend/myenv/bin/python" "$0" "$@"
-' '''
+#!/home/mahamudul/ecommerce_backend/myenv/bin/python
 # -*- coding: utf-8 -*-
 import re
 import sys
