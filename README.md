@@ -1,12 +1,31 @@
 # E-Commerce Backend System - Django REST Framework
 
-### Completed Features:
-- ✅ User Registration & Authentication
-- ✅ JWT Token-based Authentication
-- ✅ User Profile Management
-- ✅ Password Change Functionality
-- ✅ Admin & Customer Role Management
-- ✅ Complete Test Suite
+### Step 1: User Management:
+- User Registration & Authentication
+- JWT Token-based Authentication
+- User Profile Management
+- Password Change Functionality
+- Admin & Customer Role Management
+- Complete Test Suite
+
+## Step 2: Product Management (Coming Next)
+- Product CRUD operations
+- Category management with hierarchical structure
+- Stock management
+- Product search and filtering
+- Admin-only product management
+
+### Step 3: Order Management
+- Create orders
+- Order items management
+- Order status tracking
+- Calculate totals and subtotals
+
+### Step 4: Payment System
+- Stripe integration
+- bKash integration
+- Payment webhooks
+- Strategy pattern implementation
 
 ---
 
@@ -16,7 +35,7 @@
 - Python 3.11+
 - PostgreSQL 15+
 - Redis 7+
-- Docker & Docker Compose (optional)
+- Docker & Docker Compose 
 
 ### Installation (Local Setup)
 
@@ -34,7 +53,6 @@ source venv/bin/activate
 # Install dependencies
 pip install -r requirements.txt
 ```
-
 #### 2. Database Setup
 ```bash
 # Create PostgreSQL database
@@ -45,7 +63,6 @@ psql -U postgres
 CREATE DATABASE ecommerce_db;
 \q
 ```
-
 #### 3. Environment Configuration
 ```bash
 # Copy .env.example to .env
@@ -54,7 +71,6 @@ cp .env.example .env
 # Edit .env file with your credentials
 # Important: Update SECRET_KEY, DB credentials, and API keys
 ```
-
 #### 4. Run Migrations
 ```bash
 python manage.py makemigrations
@@ -66,15 +82,13 @@ python manage.py migrate
 python manage.py createsuperuser
 # Enter: email, first name, last name, password
 ```
-
 #### 6. Run Development Server
 ```bash
 python manage.py runserver
 ```
-
 Server will start at: `http://localhost:8000`
-
 ---
+
 
 ## 🐳 Docker Setup
 
@@ -95,11 +109,11 @@ docker-compose down
 # Stop and remove volumes
 docker-compose down -v
 ```
-
 ### Create Superuser in Docker
 ```bash
 docker-compose exec backend python manage.py createsuperuser
 ```
+
 
 ---
 
@@ -396,6 +410,8 @@ python manage.py shell
 python manage.py test
 ```
 
+---
+---
 
 ## 🐛 Common Issues & Solutions
 
