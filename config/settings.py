@@ -12,6 +12,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = env_config('SECRET_KEY')
+
 DEBUG = env_config('DEBUG', default=False, cast=bool)
 
 
@@ -94,7 +95,11 @@ DATABASES = {
         'HOST': env_config('DB_HOST', default='localhost'),
         'PORT': env_config('DB_PORT'),
 
+        'TEST': {
+            'NAME': 'test_ecommerce_db',  
+        },
     }
+    
 }
 
 
