@@ -164,19 +164,19 @@ POST /api/users/change-password/
 ### **Category Endpoints:**
 ```
 GET  /api/categories/              # List all
-GET  /api/categories/tree/         # Full tree (DFS) ⭐
+GET  /api/categories/tree/         # Full tree (DFS) 
 GET  /api/categories/roots/        # Root categories
 GET  /api/categories/{slug}/       # Category detail
-GET  /api/categories/{slug}/descendants/  # DFS descendants ⭐
+GET  /api/categories/{slug}/descendants/  # DFS descendants 
 GET  /api/categories/{slug}/products/     # All products in tree
 POST /api/categories/              # Create (Admin)
 ```
 ### **Product Endpoints:**
 ```
 GET  /api/products/                # List all
-GET  /api/products/search/         # Search with filters ⭐
+GET  /api/products/search/         # Search with filters 
 GET  /api/products/{slug}/         # Product detail (cached)
-GET  /api/products/{slug}/related/ # Related products (DFS) ⭐
+GET  /api/products/{slug}/related/ # Related products (DFS) 
 POST /api/products/{slug}/update_stock/  # Stock management
 POST /api/products/  
 ```
@@ -185,7 +185,7 @@ POST /api/products/
  ## 🔐 API Endpoints ( Order Management )
 ### **Customer Endpoints:**
 ```
-POST   /api/orders/                    # Create order ⭐
+POST   /api/orders/                    # Create order 
 GET    /api/orders/my_orders/          # My orders list
 GET    /api/orders/{id}/               # Order detail
 PATCH  /api/orders/{id}/               # Update (pending only)
@@ -196,8 +196,8 @@ PATCH  /api/orders/{id}/items/{item_id}/  # Update item qty
 ### **Admin Endpoints:**
 ```
 GET    /api/orders/                    # All orders
-POST   /api/orders/{id}/update_status/ # Update status ⭐
-GET    /api/orders/summary/            # Order statistics ⭐
+POST   /api/orders/{id}/update_status/ # Update status 
+GET    /api/orders/summary/            # Order statistics 
 + All customer endpoints
 ```
 
@@ -313,7 +313,7 @@ Content-Type: application/json
 
 ---
 
-## 🧪 Running Tests
+##  Running Tests
 
 ### Run All Tests
 ```bash
@@ -345,47 +345,47 @@ coverage html  # Generate HTML report
 ```
 ecommerce_backend/
 ├── manage.py (Django creates)
-├── requirements.txt ✅
-├── .env.example ✅ → copy to .env
-├── .gitignore ✅
-├── docker-compose.yml ✅
-├── Dockerfile ✅
+├── requirements.txt 
+├── .env.example 
+├── .gitignore 
+├── docker-compose.yml 
+├── Dockerfile 
 │
 ├── config/
 │   ├── __init__.py (Django creates)
-│   ├── settings.py ✅ REPLACE
-│   ├── urls.py ✅ REPLACE
+│   ├── settings.py
+│   ├── urls.py 
 │   ├── wsgi.py (keep)
 │   └── asgi.py (keep)
 │
 ├── apps/
-│   ├── __init__.py ✅
+│   ├── __init__.py 
 │   └── users/
-│       ├── __init__.py ✅
-│       ├── apps.py ✅ REPLACE
-│       ├── models.py ✅ REPLACE
-│       ├── serializers.py ✅ NEW
-│       ├── views.py ✅ REPLACE
-│       ├── urls.py ✅ NEW
-│       ├── admin.py ✅ REPLACE
-│       ├── permissions.py ✅ NEW
-│       ├── tests.py ✅ REPLACE
+│       ├── __init__.py 
+│       ├── apps.py 
+│       ├── models.py 
+│       ├── serializers.py 
+│       ├── views.py 
+│       ├── urls.py 
+│       ├── admin.py 
+│       ├── permissions.py 
+│       ├── tests.py 
 │       └── management/
-│           ├── __init__.py ✅
+│           ├── __init__.py 
 │           └── commands/
-│               ├── __init__.py ✅
-│               └── seed_users.py ✅ NEW
+│               ├── __init__.py 
+│               └── seed_users.py 
 │
 ├── utils/
-│   ├── __init__.py ✅
-│   └── exceptions.py ✅
+│   ├── __init__.py 
+│   └── exceptions.py 
 │
 └── logs/ (create empty folder)
 ```
 
 ---
 
-## 🔧 Development Commands
+## Development Commands
 
 ```bash
 # Create new app
@@ -413,7 +413,7 @@ python manage.py test
 ---
 ---
 
-## 🐛 Common Issues & Solutions
+## Common Issues & Solutions
 
 ### Issue: Database connection error
 ```bash
