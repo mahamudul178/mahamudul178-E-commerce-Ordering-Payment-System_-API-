@@ -218,7 +218,7 @@ class UserRegistrationTest(APITestCase):
     
 
     
-        
+            
     def test_register_duplicate_email(self):
         """Test registration with duplicate email"""
         User.objects.create_user(
@@ -236,10 +236,17 @@ class UserRegistrationTest(APITestCase):
             'last_name': 'User'
         }
         response = self.client.post(url, data)
+        
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertEqual(response.data['success'], False)  # এটুকুই যথেষ্ট
-                
-                
+        # Response structure check
+        self.assertIn('error', response.data)
+        self.assertIn('details', response.data['error'])
+        self.assertIn('email', response.data['error']['details'])    
+                    
+            
+            
+            
+            
             
     def test_register_password_mismatch(self):
         """Test registration with password mismatch"""
