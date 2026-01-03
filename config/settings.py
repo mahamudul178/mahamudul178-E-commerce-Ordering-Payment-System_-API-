@@ -1,11 +1,14 @@
 
 
+
 from pathlib import Path
 from datetime import timedelta
 from decouple import config as env_config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = env_config('SECRET_KEY')
@@ -16,6 +19,7 @@ ALLOWED_HOSTS = env_config(
     'ALLOWED_HOSTS',
     default='localhost,127.0.0.1'
 ).split(',')
+
 
 
 # Application definition
@@ -288,6 +292,7 @@ CACHE_TTL = 60 * 15  # 15 minutes
 STRIPE_PUBLIC_KEY = env_config('STRIPE_PUBLIC_KEY', default='')
 STRIPE_SECRET_KEY = env_config('STRIPE_SECRET_KEY', default='')
 STRIPE_WEBHOOK_SECRET = env_config('STRIPE_WEBHOOK_SECRET', default='')
+
 
 # bKash Configuration
 BKASH_APP_KEY = env_config('BKASH_APP_KEY', default='')
