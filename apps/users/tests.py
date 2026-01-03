@@ -221,6 +221,7 @@ class UserRegistrationTest(APITestCase):
             
     def test_register_duplicate_email(self):
         """Test registration with duplicate email"""
+        # প্রথমে একটি user তৈরি করুন
         User.objects.create_user(
             email='duplicate@example.com',
             password='testpass123',
@@ -228,7 +229,9 @@ class UserRegistrationTest(APITestCase):
             last_name='User'
         )
         
-        url = reverse('user-register')
+        # সঠিক URL name: namespace + ':' + name
+        url = reverse('users:register')  # ✅ এটাই সঠিক
+        
         data = {
             'email': 'duplicate@example.com',
             'password': 'testpass123',
@@ -237,14 +240,13 @@ class UserRegistrationTest(APITestCase):
         }
         response = self.client.post(url, data)
         
+        # Assertions
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        # Response structure check
         self.assertIn('error', response.data)
         self.assertIn('details', response.data['error'])
-        self.assertIn('email', response.data['error']['details'])    
-                    
-            
-            
+        self.assertIn('email', response.data['error']['details'])           
+                
+                
             
             
             
