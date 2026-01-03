@@ -214,34 +214,12 @@ class UserRegistrationTest(APITestCase):
         user = User.objects.get(email=self.valid_data['email'])
         self.assertTrue(hasattr(user, 'profile'))
     
-    
-    
-    # def test_register_duplicate_email(self):
-    # def test_register_duplicate_email(self):
-    #     """Test registration with duplicate email"""
-    #     User.objects.create_user(
-    #         email=self.valid_data['email'],
-    #         password='password123'
-    #     )
 
-    #     response = self.client.post(
-    #         self.register_url,
-    #         self.valid_data,
-    #         format='json'
-    #     )
-
-    #     self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-
-    #     # ✅ Correct assertion based on your API response structure
-    #     self.assertIn('error', response.data)
-    #     self.assertIn('details', response.data['error'])
-    #     self.assertIn('email', response.data['error']['details'])
-    
-    
     
     
     def test_register_duplicate_email(self):
         """Test registration with duplicate email"""
+        # প্রথমে একটি user তৈরি করুন
         User.objects.create_user(
             email='duplicate@example.com',
             password='testpass123',
@@ -249,6 +227,7 @@ class UserRegistrationTest(APITestCase):
             last_name='User'
         )
         
+        # একই email দিয়ে আবার registration attempt
         url = reverse('user-register')
         data = {
             'email': 'duplicate@example.com',
@@ -258,11 +237,14 @@ class UserRegistrationTest(APITestCase):
         }
         response = self.client.post(url, data)
         
+        # Status code check
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        # শুধু verify করুন যে success False
-        self.assertEqual(response.data.get('success'), False)
-            
-            
+        
+        # Response structure অনুযায়ী check - এটাই সঠিক উপায়
+        self.assertIn('error', response.data)
+        self.assertIn('details', response.data['error'])
+        self.assertIn('email', response.data['error']['details'])
+                
             
             
             
