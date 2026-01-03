@@ -93,6 +93,9 @@ DATABASES = {
         'PASSWORD': env_config('DB_PASSWORD'),
         'HOST': env_config('DB_HOST', default='localhost'),
         'PORT': env_config('DB_PORT'),
+        'TEST': {
+            'NAME': 'ecommerce_db_test',
+        },
     }
 }
 
