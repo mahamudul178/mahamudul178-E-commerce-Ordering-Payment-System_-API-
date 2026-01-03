@@ -39,6 +39,8 @@ jobs:
           sudo -u postgres psql -c "CREATE USER ecommerce_user WITH PASSWORD 'StrongPassword123';"
           sudo -u postgres psql -c "ALTER USER ecommerce_user CREATEDB;"
           sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE ecommerce_db TO ecommerce_user;"
+          sudo -u postgres psql -d ecommerce_db -c "GRANT ALL ON SCHEMA public TO ecommerce_user;"
+          sudo -u postgres psql -d ecommerce_db -c "GRANT CREATE ON SCHEMA public TO ecommerce_user;"
 
       - name: Run migrations
         env:
