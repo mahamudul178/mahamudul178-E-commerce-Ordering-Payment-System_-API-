@@ -214,22 +214,6 @@ class UserRegistrationTest(APITestCase):
         user = User.objects.get(email=self.valid_data['email'])
         self.assertTrue(hasattr(user, 'profile'))
     
-    # def test_register_duplicate_email(self):
-    #     """Test registration with duplicate email"""
-    #     User.objects.create_user(
-    #         email=self.valid_data['email'],
-    #         password='password123'
-    #     )
-        
-    #     response = self.client.post(
-    #         self.register_url,
-    #         self.valid_data,
-    #         format='json'
-    #     )
-        
-    #     self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-    #     self.assertIn('email', response.data)
-    
     
     
     # def test_register_duplicate_email(self):
