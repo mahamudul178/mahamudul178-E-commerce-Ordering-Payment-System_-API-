@@ -1,0 +1,67 @@
+name: Django CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install PostgreSQL Client
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y postgresql-client
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Start PostgreSQL
+        run: |
+          sudo systemctl start postgresql.service
+          pg_isready
+
+      - name: Create database and user
+        run: |
+          sudo -u postgres psql -c "CREATE DATABASE ecommerce_db;"
+          sudo -u postgres psql -c "CREATE USER ecommerce_user WITH PASSWORD 'StrongPassword123';"
+          sudo -u postgres psql -c "ALTER USER ecommerce_user CREATEDB;"
+          sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE ecommerce_db TO ecommerce_user;"
+
+      - name: Run migrations
+        env:
+          DEBUG: True
+          SECRET_KEY: test-secret-key-12345
+          DB_NAME: ecommerce_db
+          DB_USER: ecommerce_user
+          DB_PASSWORD: StrongPassword123
+          DB_HOST: localhost
+          DB_PORT: 5432
+          REDIS_URL: redis://localhost:6379/1
+        run: |
+          python manage.py migrate --noinput
+
+      - name: Run tests
+        env:
+          DEBUG: True
+          SECRET_KEY: test-secret-key-12345
+          DB_NAME: ecommerce_db
+          DB_USER: ecommerce_user
+          DB_PASSWORD: StrongPassword123
+          DB_HOST: localhost
+          DB_PORT: 5432
+          REDIS_URL: redis://localhost:6379/1
+        run: |
+          python manage.py test --verbosity=2
