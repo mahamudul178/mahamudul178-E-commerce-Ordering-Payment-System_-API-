@@ -217,25 +217,38 @@ class UserRegistrationTest(APITestCase):
     
     
     # def test_register_duplicate_email(self):
+    # def test_register_duplicate_email(self):
+    #     """Test registration with duplicate email"""
+    #     User.objects.create_user(
+    #         email=self.valid_data['email'],
+    #         password='password123'
+    #     )
+
+    #     response = self.client.post(
+    #         self.register_url,
+    #         self.valid_data,
+    #         format='json'
+    #     )
+
+    #     self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    #     # ✅ Correct assertion based on your API response structure
+    #     self.assertIn('error', response.data)
+    #     self.assertIn('details', response.data['error'])
+    #     self.assertIn('email', response.data['error']['details'])
+
     def test_register_duplicate_email(self):
-        """Test registration with duplicate email"""
-        User.objects.create_user(
-            email=self.valid_data['email'],
-            password='password123'
-        )
-
-        response = self.client.post(
-            self.register_url,
-            self.valid_data,
-            format='json'
-        )
-
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-
-        # ✅ Correct assertion based on your API response structure
-        self.assertIn('error', response.data)
-        self.assertIn('details', response.data['error'])
+        response = self.client.post(self.register_url, self.user_data)
+        
+        # পুরানো: self.assertIn('email', response.data)
+        # নতুন:
         self.assertIn('email', response.data['error']['details'])
+        self.assertEqual(
+            response.data['error']['details']['email'][0],
+            "A user with this email already exists."
+        )
+
+
 
         
     def test_register_password_mismatch(self):
