@@ -1,4 +1,4 @@
-name: Django CI/CD Pipeline
+name: Django CI/CD Pipeline Updated
 
 on:
   push:
@@ -25,11 +25,10 @@ jobs:
         image: redis:7-alpine
         ports:
           - 6379:6379
-        options: --health-cmd "redis-cli ping" --health-interval 10s --health-timeout 5s --health-retries 5
 
     env:
       DEBUG: True
-      SECRET_KEY: django-insecure-test-key-for-ci-cd
+      SECRET_KEY: django-insecure-test-key-for-ci-cd-pipeline
       ALLOWED_HOSTS: localhost,127.0.0.1
       DB_NAME: ecommerce_db
       DB_USER: ecommerce_user
@@ -48,38 +47,26 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-          cache: 'pip'
+
+      - name: Cache pip dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
 
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Wait for PostgreSQL
+      - name: Wait for PostgreSQL to be ready
         run: |
-          for i in {1..30}; do
-            pg_isready -h localhost -p 5432 -U ecommerce_user && break
-            echo "Waiting for PostgreSQL... ($i/30)"
-            sleep 2
-          done
+          timeout 60 bash -c 'until pg_isready -h localhost -p 5432 -U ecommerce_user; do echo "Waiting for PostgreSQL..."; sleep 2; done'
 
-      - name: Wait for Redis
-        run: |
-          for i in {1..30}; do
-            redis-cli -h localhost -p 6379 ping && break
-            echo "Waiting for Redis... ($i/30)"
-            sleep 2
-          done
+      - name: Run database migrations
+        run: python manage.py migrate --noinput
 
-      - name: Run migrations
-        run: |
-          python manage.py migrate --noinput
-
-      - name: Run tests
-        run: |
-          python manage.py test
-
-      - name: Check code quality (optional)
-        run: |
-          pip install flake8
-          flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics || true
+      - name: Run Django tests
+        run: python manage.py test --verbosity=2
