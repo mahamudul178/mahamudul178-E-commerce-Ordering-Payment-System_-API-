@@ -25,17 +25,7 @@ class UserManager(BaseUserManager):
     def create_user(self, email, password=None, **extra_fields):
         """
         Create and return a regular user with email and password
-        
-        Args:
-            email (str): User's email address
-            password (str): User's password
-            **extra_fields: Additional user fields
-            
-        Returns:
-            User: Created user instance
-            
-        Raises:
-            ValueError: If email is not provided
+
         """
         if not email:
             raise ValueError('Users must have an email address')
@@ -48,20 +38,11 @@ class UserManager(BaseUserManager):
         logger.info(f"User created: {email}")
         return user
     
+    
     def create_superuser(self, email, password=None, **extra_fields):
         """
         Create and return a superuser with admin privileges
         
-        Args:
-            email (str): Admin's email address
-            password (str): Admin's password
-            **extra_fields: Additional user fields
-            
-        Returns:
-            User: Created superuser instance
-            
-        Raises:
-            ValueError: If is_staff or is_superuser is not True
         """
         extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_superuser', True)

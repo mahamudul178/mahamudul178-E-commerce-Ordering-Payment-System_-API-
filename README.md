@@ -1,7 +1,5 @@
 # E-Commerce Backend System - Django REST Framework
 
-## 📌 Project Status: Step 1 Complete ✅
-
 ### Completed Features:
 - ✅ User Registration & Authentication
 - ✅ JWT Token-based Authentication
@@ -105,6 +103,7 @@ docker-compose exec backend python manage.py createsuperuser
 
 ---
 
+
 ## 📚 API Documentation
 
 ### Access API Documentation
@@ -112,10 +111,85 @@ Once the server is running:
 - **Swagger UI**: http://localhost:8000/swagger/
 - **ReDoc**: http://localhost:8000/redoc/
 - **JSON Schema**: http://localhost:8000/swagger.json
-
 ---
 
+
 ## 🔐 API Endpoints (Step 1: User Management)
+
+#### 1. Register User
+```
+Register: POST /api/users/register/
+```
+#### 2. Login User
+```
+POST /api/users/login/
+```
+#### 3. Refresh Token
+```
+POST /api/users/token/refresh/
+```
+#### 4. Logout User
+```
+POST /api/users/logout/
+```
+#### 5. Get Profile
+```
+GET /api/users/profile/
+```
+#### 6. Update Profile
+```
+PATCH /api/users/profile/
+```
+#### 7. Change Password
+```
+POST /api/users/change-password/
+```
+
+## 🔐 API Endpoints ( Product Management )
+
+### **Category Endpoints:**
+```
+GET  /api/categories/              # List all
+GET  /api/categories/tree/         # Full tree (DFS) ⭐
+GET  /api/categories/roots/        # Root categories
+GET  /api/categories/{slug}/       # Category detail
+GET  /api/categories/{slug}/descendants/  # DFS descendants ⭐
+GET  /api/categories/{slug}/products/     # All products in tree
+POST /api/categories/              # Create (Admin)
+```
+### **Product Endpoints:**
+```
+GET  /api/products/                # List all
+GET  /api/products/search/         # Search with filters ⭐
+GET  /api/products/{slug}/         # Product detail (cached)
+GET  /api/products/{slug}/related/ # Related products (DFS) ⭐
+POST /api/products/{slug}/update_stock/  # Stock management
+POST /api/products/  
+```
+
+
+ ## 🔐 API Endpoints ( Order Management )
+### **Customer Endpoints:**
+```
+POST   /api/orders/                    # Create order ⭐
+GET    /api/orders/my_orders/          # My orders list
+GET    /api/orders/{id}/               # Order detail
+PATCH  /api/orders/{id}/               # Update (pending only)
+POST   /api/orders/{id}/cancel/        # Cancel order
+GET    /api/orders/{id}/history/       # Status history
+PATCH  /api/orders/{id}/items/{item_id}/  # Update item qty
+```
+### **Admin Endpoints:**
+```
+GET    /api/orders/                    # All orders
+POST   /api/orders/{id}/update_status/ # Update status ⭐
+GET    /api/orders/summary/            # Order statistics ⭐
++ All customer endpoints
+```
+
+## 🔐 API Endpoints ( Payment Management )
+
+
 
 ### Authentication Endpoints
 
@@ -256,22 +330,43 @@ coverage html  # Generate HTML report
 
 ```
 ecommerce_backend/
-├── apps/
-│   └── users/              # ✅ User Management (Complete)
-│       ├── models.py       # User & UserProfile models
-│       ├── serializers.py  # API serializers
-│       ├── views.py        # API views
-│       ├── urls.py         # URL routing
-│       └── tests.py        # Unit tests
+├── manage.py (Django creates)
+├── requirements.txt ✅
+├── .env.example ✅ → copy to .env
+├── .gitignore ✅
+├── docker-compose.yml ✅
+├── Dockerfile ✅
+│
 ├── config/
-│   ├── settings.py         # Project settings
-│   └── urls.py             # Main URL config
+│   ├── __init__.py (Django creates)
+│   ├── settings.py ✅ REPLACE
+│   ├── urls.py ✅ REPLACE
+│   ├── wsgi.py (keep)
+│   └── asgi.py (keep)
+│
+├── apps/
+│   ├── __init__.py ✅
+│   └── users/
+│       ├── __init__.py ✅
+│       ├── apps.py ✅ REPLACE
+│       ├── models.py ✅ REPLACE
+│       ├── serializers.py ✅ NEW
+│       ├── views.py ✅ REPLACE
+│       ├── urls.py ✅ NEW
+│       ├── admin.py ✅ REPLACE
+│       ├── permissions.py ✅ NEW
+│       ├── tests.py ✅ REPLACE
+│       └── management/
+│           ├── __init__.py ✅
+│           └── commands/
+│               ├── __init__.py ✅
+│               └── seed_users.py ✅ NEW
+│
 ├── utils/
-│   └── exceptions.py       # Custom exception handler
-├── requirements.txt        # Python dependencies
-├── docker-compose.yml      # Docker configuration
-├── Dockerfile              # Docker image
-└── .env.example            # Environment variables template
+│   ├── __init__.py ✅
+│   └── exceptions.py ✅
+│
+└── logs/ (create empty folder)
 ```
 
 ---
@@ -301,30 +396,6 @@ python manage.py shell
 python manage.py test
 ```
 
----
-
-## 📝 Next Steps
-
-### Step 2: Product Management (Coming Next)
-- Product CRUD operations
-- Category management with hierarchical structure
-- Stock management
-- Product search and filtering
-- Admin-only product management
-
-### Step 3: Order Management
-- Create orders
-- Order items management
-- Order status tracking
-- Calculate totals and subtotals
-
-### Step 4: Payment System
-- Stripe integration
-- bKash integration
-- Payment webhooks
-- Strategy pattern implementation
-
----
 
 ## 🐛 Common Issues & Solutions
 
@@ -357,10 +428,6 @@ kill -9 <PID>
 
 ## 📧 Contact & Support
 
-For questions or issues, please contact the development team.
+For questions or issues, please contact mh1445156@gmail.com.
 
 ---
-
-**Status:** Step 1 Complete ✅  
-**Next:** Product Management System  
-**Last Updated:** December 2024
