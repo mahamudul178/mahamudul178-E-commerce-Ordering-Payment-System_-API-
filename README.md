@@ -203,6 +203,20 @@ GET    /api/orders/summary/            # Order statistics
 
 ## 🔐 API Endpoints ( Payment Management )
 
+| Method | Endpoint | Description |
+|------|--------|------------|
+| GET | /api/payments/ | List payments |
+| POST | /api/payments/ | Create payment |
+| GET | /api/payments/{id}/ | Payment details |
+| PUT | /api/payments/{id}/ | Update payment |
+| PATCH | /api/payments/{id}/ | Partial update |
+| DELETE | /api/payments/{id}/ | Delete payment |
+| POST | /api/payments/{id}/initiate/ | Initiate payment |
+| POST | /api/payments/{id}/execute/ | Execute payment |
+| POST | /api/payments/webhook/{provider}/ | Payment webhook |
+
+---
+
 
 
 ### Authentication Endpoints
@@ -310,6 +324,9 @@ Content-Type: application/json
   "new_password_confirm": "NewPass123!"
 }
 ```
+
+
+
 
 ---
 
